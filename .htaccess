@@ -1,0 +1,93 @@
+# ======================================================================
+# SERAP NAIL ART KİŞİSEL BAKIM MERKEZİ (.htaccess)
+# Google SEO + AI SEO (LLM / GEO) + WhatsApp Open Graph + Hız Optimizasyonu
+# ======================================================================
+
+# 1. Varsayılan Açılış Dosyası (Eski WordPress index.php yerine index.html)
+DirectoryIndex index.html index.htm
+Options -Indexes +FollowSymLinks
+AddDefaultCharset UTF-8
+
+# 2. MIME Türleri (AI Botları, WebP Görseller ve Modern Web Standartları)
+<IfModule mod_mime.c>
+  AddType text/plain .txt
+  AddCharset UTF-8 .html .css .js .xml .json .txt
+  AddType application/manifest+json .webmanifest .json
+  AddType application/xml .xml
+  AddType image/webp .webp
+  AddType image/jpeg .jpg .jpeg
+  AddType image/png .png
+  AddType image/svg+xml .svg
+</IfModule>
+
+# 3. Rewrite Kuralları (HTTPS, Eski WordPress Link Yönlendirmesi & AI Keşfi)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+  # HTTPS Zorunlu Yönlendirme (SSL aktifse otomatik https'e çevirir)
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # AI Botları için /.well-known/llms.txt isteğini doğrudan llms.txt'ye bağla
+  RewriteRule ^\.well-known/llms\.txt$ llms.txt [L]
+
+  # Eski WordPress kalıntı isteklerini (index.php, wp-admin, wp-login vb.) temizle ve ana sayfaya yönlendir
+  RewriteRule ^index\.php$ index.html [L]
+  RewriteRule ^wp-(content|includes|json|admin)(/.*)?$ / [R=301,L]
+
+  # Bulunamayan eski WordPress alt sayfalarını (404 yerine) mevcut dizindeki index.html'e düşür
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . index.html [L]
+</IfModule>
+
+# 4. AI SEO (ChatGPT, Claude, Perplexity, Gemini, Google) & WhatsApp Önizleme Başlıkları
+<IfModule mod_headers.c>
+  # Arama motorları ve AI botlarına tam içerik ve büyük görsel önizleme izni
+  Header set X-Robots-Tag "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+
+  # AI ve LLM tarayıcılarına llms.txt rehberini HTTP başlığında bildir
+  Header add Link "</llms.txt>; rel=\"help\"; type=\"text/plain\"; title=\"Serap Nail ART AI & LLM Hizmet Kilavuzu\""
+
+  # WhatsApp, Facebook, Instagram, Twitter ve AI Botlarının görsel/veri çekmesini kolaylaştır (CORS)
+  <FilesMatch "\.(jpg|jpeg|png|webp|svg|txt|xml|json|webmanifest)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+
+  # Güvenlik Başlıkları
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 5. GZIP / Deflate Sıkıştırma (Yüksek Sayfa Açılış Hızı & Core Web Vitals)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/manifest+json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# 6. Tarayıcı Önbellekleme (Browser Caching - Google PageSpeed 100/100)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 7 days"
+
+  # Görseller (WebP, PNG, JPG, SVG) -> 1 Yıl
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # CSS ve JavaScript -> 1 Ay
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+
+  # HTML, SEO ve AI Dosyaları -> Her zaman güncel
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/plain "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 1 hour"
+  ExpiresByType application/json "access plus 1 hour"
+</IfModule>
