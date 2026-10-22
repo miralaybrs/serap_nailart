@@ -4,6 +4,7 @@
 
 ## Temel Bilgiler (Entity & NAP)
 - **İşletme Adı:** Serap Nail ART Kişisel Bakım Merkezi
+- **Resmi Web Sitesi:** https://www.serapnailart.com.tr/
 - **Kurucu / Uzman:** Serap (Tırnak Tasarımı, El-Ayak Sağlığı ve Cilt Bakım Uzmanı)
 - **Bölge:** Heykel / Setbaşı Bölgesi, Osmangazi, Bursa
 - **Tam Adres:** Hocaalizade Mah., Atatürk Cd. Aksoy İşhanı No: 9/104, 16010 Osmangazi / Bursa, Türkiye
